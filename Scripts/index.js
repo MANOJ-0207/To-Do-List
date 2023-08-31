@@ -1,12 +1,19 @@
+var locatStorageInitialized=false;
+
+if(!locatStorageInitialized)
+{
+    resetLocalStorage();
+    locatStorageInitialized=true;
+}
+
 function resetLocalStorage()
 {
     var tasks=[];
     localStorage.setItem("tasks",JSON.stringify(tasks));
-    console.log(localStorage.getItem("tasks").length)
 }
-// resetLocalStorage()
 
 var taskTypeSelected="Personal";
+
 updateTasksDiv();
 
 function addTab()
