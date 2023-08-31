@@ -1,0 +1,323 @@
+.addSection
+{
+    background-color: white;
+    height:105px;
+    box-shadow: 0 2px 4px 0 rgba(153, 153, 153, 0.5);
+    border-radius: 51px;
+    padding:24px 2.5%;
+    box-sizing: border-box;
+    font-family: Helvetica;
+    font-size: 48px;
+    font-weight: bold;
+    color: #999;
+}
+.addSection i
+{
+    color:#43b05c;
+    cursor: pointer;
+}
+body
+{
+    margin:0px;
+}
+.closeButton
+{
+    background-color: white;
+    border:none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.closeButton i
+{
+    color:#43b05c
+    
+}
+.content
+{
+    padding-top:145px;
+    padding-bottom:70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    height:100%;
+    background-color: #43b05c;
+    overflow: scroll;
+}
+.column1
+{
+    margin-right: 1.8%;
+}
+.dateTimeDiv
+{
+    display: flex;
+    flex-wrap: wrap;
+}
+.dateTimeDiv div
+{
+    flex-basis: 49%;
+}
+.finishTask
+{
+    display:flex;
+    flex-basis: 10%;
+    justify-content:center;
+    align-items: center;
+}
+.hidden
+{
+    display:none;
+}
+.lable
+{
+    font-family: Helvetica;
+    font-size: 18px;
+    font-weight: 300;
+    display:block;
+    color: #43b05c;
+    margin-top:21px;
+}
+.logo
+{
+    text-align: center;
+    padding-top: 12px;
+    height:60px;
+    width:60px;
+    border-radius: 50%;
+    background-color: white;
+    border: solid 1px #bbb;
+    font-family: Helvetica;
+    font-size: 36px;
+    font-weight: 300;
+    box-sizing: border-box;
+    color: #43b05c;
+}
+.radio
+{
+   accent-color:#43b05c;
+   background-color: #999;
+   margin:0;
+}
+.searchBar
+{
+  flex-basis:17%;
+  border-radius: 32.5px;
+  padding:14px 17px;
+  font-family: Helvetica;
+  font-size: 14px;
+  font-weight: 300;
+  color: #bbb;
+  height:47px;
+  display:flex;
+  align-items: center;
+  box-sizing: border-box;
+  border: solid 1px #979797;
+}
+.searchBar input
+{
+    border:none;
+    outline: none;
+}
+.searchBar i
+{
+    color:#43b05c;
+}
+.searchTab
+{
+    padding-top: 43px;
+    display:flex;
+    justify-content: space-between;
+}
+.submission
+{
+    margin-top:56px;
+}
+.submission button
+{
+    width:50%;
+    border-radius: 14px;
+    border: solid 1px #979797;
+    background-color: #43b05c;
+    color:white;
+    margin-left: 30%;
+    cursor: not-allowed;
+    height:51px;
+}
+.submitButton
+{
+    flex-basis: 40%;
+    text-align: right;
+}
+.radioButtons
+{
+    flex-basis: 60%;
+    display: flex;
+    align-items: center;
+}
+.radioButtons label
+{
+    margin-left: 7px;
+    margin-right: 19px;
+    font-family: Helvetica;
+    font-size: 14px;
+    font-weight: 300;
+    color: #999;
+}
+.remainingTime
+{
+  display: flex;
+  align-items: center;
+  font-family: Helvetica;
+  font-size: 14px;
+  font-weight: 300;
+  padding-left:10%;
+  color: #616161;
+}
+.task
+{
+    display: flex;
+    border-bottom:1px solid #616161;
+    padding-top:20px;
+    padding-bottom:15px;
+    justify-content: space-between;
+}
+.taskCategory
+{
+    display:flex;
+    padding-top:70px;
+}
+.taskCount
+{
+    font-family: Helvetica;
+    font-size: 20px;
+    font-weight: 300;
+    color: #999;
+    display: flex;
+    flex-basis: 60%;
+}
+.tasksContainer
+{
+    width:80%;
+    border-radius: 10px;
+    background-color: white;
+    margin-top: 68px;
+    padding:24px 4.2%;
+    min-height: 417px;
+}
+.tasksContainer h1
+{
+  font-family: Helvetica;
+  font-size: 36px;
+  font-weight: 300;
+  color: #43b05c;
+  display: flex;
+}
+.taskContent
+{
+    flex-basis:60%;
+    padding-left:32px;
+    font-family: Helvetica;
+    font-size: 14px;
+    font-weight: 300;
+    color: #616161;
+}
+.taskContent h2
+{
+    margin:4px 0px;
+}
+.tasksList
+{
+    min-height:270px;
+    max-height:350px;
+    overflow-y: auto;
+    padding-right:2.6%;
+}
+.tasksSection
+{
+    background-color: white;
+    width:48.6%;
+    padding:34px 4.65%;
+    border-radius: 14px;
+    border: solid 1px #979797;
+}
+.tasksSection h1
+{
+  text-align: center;
+  font-family: Helvetica;
+  font-size: 24px;
+  font-weight: bold;
+  color: #999;
+}
+.tasksSection input::placeholder
+{
+    font-family: Helvetica;
+    font-size: 18px;
+    font-weight: 300;
+    color: #bbb;
+}
+.taskStatus
+{
+    display:flex;
+}
+.taskStatus button
+{
+  margin-left: 9px;
+  background-color: white;
+  padding:0px 13px;
+  font-family: Helvetica;
+  font-size: 20px;
+  font-weight: 300;
+  height:31px;
+  border-radius: 16.5px;
+  color: #999;
+  border:0px;
+}
+.taskStatus button:hover
+{
+    border: solid 1px #43b05c;
+}
+.taskStatus button.selected
+{
+    border: solid 1px #43b05c;
+}
+.taskTypes
+{
+    width:20%;
+    border:none;
+    border-bottom: solid 1px #ddd;
+    height:60px;
+    font-family: Helvetica;
+    font-size: 18px;
+    font-weight: 300;
+    color: #999;
+}
+.textInputs input
+{
+    border: none;
+    border-bottom: solid 1px #979797;
+    padding:6px 0;
+    width:100%;
+}
+.textInputs input:focus
+{
+    outline: none;
+}
+.view
+{
+    display:block;
+}
+::-webkit-scrollbar
+{
+    width:8px;
+}
+::-webkit-scrollbar-thumb{
+    background-color:#43b05c;
+    border-radius:10px;
+}
+::-webkit-scrollbar-track
+{
+    background-color: #bbb;
+    border-radius: 10px;
+}

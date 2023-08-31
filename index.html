@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="StyleSheets/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <title>To-Do-List</title>
+</head>
+<body>
+    <div class="content">
+        <div class="addSection" id="addSection">
+            <span>Your TO-DO List <i onclick="addTab()" class="fa-solid fa-circle-plus"></i></span>
+        </div>
+        <div class="tasksSection hidden" id="tasksSection">
+            <h1>Add a new Task</h1>
+            <div class="textInputs">
+                <span class="lable">Add Task</span>
+                <input type="text" oninput="fillCheck()"  id="task" placeholder="What needs to be done ?">
+                <span class="lable">Description</span>
+                <input type="text" oninput="fillCheck()" id="description" placeholder="Describe your task">
+                <div class="dateTimeDiv">
+                    <div class="column1">
+                        <span class="lable">Date</span>
+                        <input type="text"  oninput="fillCheck()" id="date" placeholder="dd/mm/yyyy">
+                    </div>
+                    <div class="column2">
+                        <span class="lable">Add Task</span>
+                        <input type="text" oninput="fillCheck()" id="time" placeholder="hr:min:ss">
+                    </div>
+                </div>
+            </div>
+            <div class="submission">
+                <div class="radioButtons">
+                    <input type="radio" name="type" value="Personal"  id="personal" class="radio" checked> <label for="personal" >Personal</label>
+                    <input type="radio" name="type" value="Business" id="business" class="radio"> <label for="business">Business</label>
+                    <input type="radio" name="type" value="Other" id="other" class="radio"> <label for="other">Other</label>
+                </div>
+                <div class="submitButton">
+                    <button id="submitButton" onclick="addTask()">Save</button>
+                </div>
+            </div>  
+        </div>
+        <div class="tasksContainer" id="tasksContainer">
+            <div class="typeSelect">
+            </div>
+            <div class="searchTab">
+                <select  class="taskTypes" id="tastType" onchange="changeTaskType()">
+                    <option value="Personal">Personal</option>
+                    <option value="Business">Business</option>
+                    <option value="Other">Other</option>
+                </select>
+                <div class="searchBar">
+                    <input type="text" placeholder="Search By Task name "><i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+            <h1>Tasks</h1>
+            <div class="tasksList" id="tasksList">
+                <div class="task">
+                    <div class="logo">
+                        T
+                    </div>
+                    <div class="taskContent">
+                        <h2>Task 1</h2>
+                        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat blanditiis veritatis voluptates illo dolor libero rem impedit, amet expedita sapiente.</span>
+                    </div>
+                    <div class="remainingTime">
+                        3 days 2 hrs to go
+                    </div>
+                    <div class="finishTask">
+                        <button class="closeButton"><i class="fa-solid fa-x"></i></button>
+                    </div>
+                </div>        
+            </div>
+            <div class="taskCategory">
+                <div class="taskCount">
+                    <span><span id="count">1 </span> item left</span>
+                </div>
+                <div class="taskStatus">
+                    <button class="selected">All</button>
+                    <button>Completed</button>
+                    <button>Active</button>
+                    <button>Clear</button>
+                    <button>Completed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="Scripts/index.js"></script>
+</html>
