@@ -8,7 +8,6 @@
     <title>To-Do-List</title>
 </head>
 <body>
-    <button onclick="resetLocalStorage()">Clear</button>
     <div class="content">
         <div class="addSection" id="addSection">
             <span>Your TO-DO List <i onclick="addTab()" class="fa-solid fa-circle-plus"></i></span>
@@ -42,11 +41,11 @@
                 </div>
             </div>  
         </div>
-        <div class="tasksContainer" id="tasksContainer">
+        <div class="tasksContainer hidden" id="tasksContainer">
             <div class="typeSelect">
             </div>
             <div class="searchTab">
-                <select  class="taskTypes" id="tastType" onchange="changeTaskType()">
+                <select  class="taskTypes" id="taskType" onchange="changeTaskType()">
                     <option value="Personal">Personal</option>
                     <option value="Business">Business</option>
                     <option value="Other">Other</option>
@@ -87,6 +86,6 @@
             </div>
         </div>
     </div>
+    <script src="Scripts/index.js"></script>
 </body>
-<script src="Scripts/index.js"></script>
 </html>

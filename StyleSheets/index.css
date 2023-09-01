@@ -32,7 +32,16 @@ body
 .closeButton i
 {
     color:#43b05c
-    
+}
+.completed
+{
+    text-decoration: line-through;
+    justify-content: left;
+}
+.completed .logo
+{
+    background-color: #43b05c;
+    color:white;
 }
 .content
 {
@@ -94,6 +103,7 @@ body
     font-weight: 300;
     box-sizing: border-box;
     color: #43b05c;
+    cursor:pointer;
 }
 .radio
 {
@@ -169,11 +179,11 @@ body
 .remainingTime
 {
   display: flex;
+  flex-basis: 20%;
   align-items: center;
   font-family: Helvetica;
   font-size: 14px;
   font-weight: 300;
-  padding-left:10%;
   color: #616161;
 }
 .task
@@ -182,7 +192,6 @@ body
     border-bottom:1px solid #616161;
     padding-top:20px;
     padding-bottom:15px;
-    justify-content: space-between;
 }
 .taskCategory
 {
@@ -217,7 +226,7 @@ body
 }
 .taskContent
 {
-    flex-basis:60%;
+    flex-basis:70%;
     padding-left:32px;
     font-family: Helvetica;
     font-size: 14px;
@@ -234,6 +243,12 @@ body
     max-height:350px;
     overflow-y: auto;
     padding-right:2.6%;
+}
+.tasksList h1
+{
+    text-align: center;
+    display: block;
+    padding-top:70px;
 }
 .tasksSection
 {

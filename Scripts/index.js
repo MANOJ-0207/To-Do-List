@@ -1,25 +1,23 @@
-var locatStorageInitialized=false;
+if(localStorage.getItem("tasks")==null)
+    initializeLocalStorage();
 
-if(!locatStorageInitialized)
+function initializeLocalStorage()
 {
-    resetLocalStorage();
-    locatStorageInitialized=true;
-}
-
-function resetLocalStorage()
-{
-    var tasks=[];
-    localStorage.setItem("tasks",JSON.stringify(tasks));
+    var allTasks={};
+    allTasks.Personal=[];
+    allTasks.Business=[];
+    allTasks.Other=[];
+    localStorage.setItem("tasks",JSON.stringify(allTasks));
 }
 
 var taskTypeSelected="Personal";
 
-updateTasksDiv();
+updateTasksDiv(taskTypeSelected);
 
 function addTab()
 {   
-    document.getElementById("addSection").classList.add("hidden");
-    document.getElementById("tasksSection").classList.remove("hidden");    
+    document.getElementById("addSection").classList.toggle("hidden");
+    document.getElementById("tasksSection").classList.toggle("hidden");    
 }
 
 function addTask()
@@ -29,13 +27,18 @@ function addTask()
     task.description=document.getElementById("description").value;
     task.date=document.getElementById("date").value;
     task.time=document.getElementById("time").value;
-    task.type=document.querySelector('input[name="type"]:checked').value;
-    var tasksArray=JSON.parse(localStorage.getItem("tasks"));
+    var taskType=document.querySelector('input[name="type"]:checked').value;
+    task.type=taskType
+    var allTasks=JSON.parse(localStorage.getItem("tasks"));
+    var tasksArray=getTasksArray(allTasks,taskType);
     tasksArray.push(task);
-    localStorage.setItem("tasks",JSON.stringify(tasksArray));
+    setTasksArray(allTasks,tasksArray,taskType);
+    localStorage.setItem("tasks",JSON.stringify(allTasks));
     console.log("Added");
-    updateTasksDiv();
+    updateTasksDiv(taskTypeSelected);
     console.log(tasksArray);
+    addTab();
+    resetInput();
 }
 
 function calculateTimeDiff(taskDeadLine)
@@ -51,22 +54,68 @@ function calculateTimeDiff(taskDeadLine)
         return days + " days "+ hours +" hours to go";
     return "Deadline Passed";
 }
+
 function changeTaskType()
 {
     taskTypeSelected=document.getElementById("taskType").value;
-    updateTasksDiv();
+    updateTasksDiv(taskTypeSelected);
 }
 
-function deleteTask(taskId)
+function createTaskDiv(task,i)
 {
-    var tasksArray=JSON.parse(localStorage.getItem("tasks"));
+    var taskDiv=document.createElement('div');
+    taskDiv.classList.add("task");
+    taskDiv.setAttribute("id",(i+task.type));
+    var logoDiv=document.createElement('div');
+    logoDiv.classList.add("logo");
+    logoDiv.innerHTML="T";
+    logoDiv.setAttribute("onclick","completeTask('"+(i+task.type)+"','"+task.type+"',"+i+")");
+    taskDiv.appendChild(logoDiv);
+    var taskContent=document.createElement('div');
+    taskContent.classList.add("taskContent");
+    taskContent.innerHTML=`<h2>${task.name}</h2><span>${task.description}</span`
+    taskDiv.appendChild(taskContent);
+    var timeRemaining=document.createElement('div');
+    timeRemaining.classList.add("remainingTime");
+    timeRemaining.setAttribute("id",i+task.type+"RemainingTime");
+    var deadLine=calculateTimeDiff(task.date+" "+task.time);
+    timeRemaining.innerHTML=deadLine;
+    taskDiv.appendChild(timeRemaining);
+    var closeButton=document.createElement('div');
+    closeButton.classList.add("closeButton");
+    closeButton.setAttribute("id",i+task.type+"CloseButton");
+    closeButton.innerHTML=`<button class="closeButton" onclick="deleteTask(`+i+`,'`+task.type+`')"><i class="fa-solid fa-x"></i></button>`;
+    taskDiv.appendChild(closeButton);
+    return taskDiv;
+}
+
+function completeTask(taskDivId,taskType,taskId)
+{   
+    var taskDiv=document.getElementById(taskDivId);
+    taskDiv.classList.add("completed");
+    taskDiv.firstChild.innerHTML='<i class="fa-solid fa-check"></i>';
+    document.getElementById(taskDivId+"RemainingTime").innerHTML="";
+    document.getElementById(taskDivId+"CloseButton").innerHTML="";
+    var allTasks=JSON.parse(localStorage.getItem("tasks"));
+    var tasksArray=getTasksArray(allTasks,taskType);
     if(taskId==0)
         tasksArray.shift();
     else
         tasksArray.splice(taskId,taskId);
-    localStorage.setItem("tasks",JSON.stringify(tasksArray));
-    console.log(tasksArray);
-    updateTasksDiv();
+    setTasksArray(allTasks,tasksArray,taskType);
+    updateCount();
+}
+
+function deleteTask(taskId,taskType)
+{
+    var allTasks=JSON.parse(localStorage.getItem("tasks"));
+    var tasksArray=getTasksArray(allTasks,taskType);
+    if(taskId==0)
+        tasksArray.shift();
+    else
+        tasksArray.splice(taskId,taskId);
+    setTasksArray(allTasks,tasksArray,taskType);
+    updateTasksDiv(taskTypeSelected);
     updateCount();
 }
 
@@ -81,54 +130,82 @@ function fillCheck()
         document.getElementById("submitButton").style.cursor="pointer";
 }
 
-function updateCount()
+function getTasksArray(allTasks,taskTypeSelected)
 {
-    var taskCount=JSON.parse(localStorage.getItem("tasks")).length;
+    var allTasks=JSON.parse(localStorage.getItem("tasks"));
+    var tasksArray;
+    switch(taskTypeSelected)
+    {
+        case ("Other"):
+            tasksArray = allTasks.Other;
+            break;
+        case ("Business"):
+            tasksArray = allTasks.Business;
+            break;
+        default:
+            tasksArray = allTasks.Personal;
+    }
+    return tasksArray;
+}
+function resetInput()
+{
+    document.getElementById("task").value='';
+    document.getElementById("description").value='';
+    document.getElementById("date").value='';
+    document.getElementById("time").value='';
+}
+
+function setTasksArray(allTasks,tasksArray,taskType)
+{
+    switch(taskType)
+    {
+        case ("Other"):
+            allTasks.Other = tasksArray;
+            break;
+        case ("Business"):
+            allTasks.Business = tasksArray;
+            break;
+        case ("Personal"):
+            allTasks.Personal=tasksArray;
+    }
+    localStorage.setItem("tasks",JSON.stringify(allTasks));
+}
+
+function updateCount(taskType)
+{
+    var allTasks=JSON.parse(localStorage.getItem("tasks"));
+    var tasksArray=getTasksArray(allTasks,taskType);
+    var taskCount=tasksArray.length;
     document.getElementById("count").innerHTML=taskCount;
 }
 
-function updateTasksDiv()
+function updateTasksDiv(taskTypeSelected)
 {
-    var tasksArray=JSON.parse(localStorage.getItem("tasks"));
+    var allTasks=JSON.parse(localStorage.getItem("tasks"));
+    var tasksArray=getTasksArray(allTasks,taskTypeSelected);
     var len=tasksArray.length;
-    if(len===0)
+    var tasksList=document.getElementById("tasksList");
+    var taskContainer=document.getElementById("tasksContainer");
+    taskContainer.classList.remove("hidden");
+    if(allTasks.Personal.length==0 && allTasks.Other.length==0 && allTasks.Business.length==0)
     {
-        document.getElementById("tasksContainer").classList.add("hidden");
+        taskContainer.classList.add("hidden");
         return;
+    }
+    else if(len==0)
+    {
+        tasksList.innerHTML="<h1> --- Nill ---</h1>"
     }
     else
     {
-        document.getElementById("tasksContainer").classList.remove("hidden");
+        while(tasksList.firstChild)
+            tasksList.removeChild(tasksList.firstChild);
+        for(var i=0;i<len;i++)
+        {
+            var task=tasksArray[i];
+            var taskDiv=createTaskDiv(task,i);
+            tasksList.appendChild(taskDiv);    
+        }
+        updateCount(task);
     }
-    var tasksList=document.getElementById("tasksList")
-    while(tasksList.firstChild)
-        tasksList.removeChild(tasksList.firstChild);
-    for(var i=0;i<len;i++)
-    {
-        var task=tasksArray[i];
-        var taskDiv=document.createElement('div');
-        taskDiv.classList.add("task");
-        var logoDiv=document.createElement('div');
-        logoDiv.classList.add("logo");
-        logoDiv.innerHTML="T";
-        taskDiv.appendChild(logoDiv);
-        var taskContent=document.createElement('div');
-        taskContent.classList.add("taskContent");
-        taskContent.innerHTML=`<h2>${task.name}</h2><span>${task.description}</span`
-        taskDiv.appendChild(taskContent);
-        var timeRemaining=document.createElement('div');
-        timeRemaining.classList.add("remainingTime");
-        // console.log(task.date+" "+task.time)
-        var deadLine=calculateTimeDiff(task.date+" "+task.time);
-        timeRemaining.innerHTML=deadLine;
-        taskDiv.appendChild(timeRemaining);
-        var closeButton=document.createElement('div');
-        closeButton.classList.add("closeButton");
-        closeButton.innerHTML='<button class="closeButton" onclick="deleteTask('+i+')"><i class="fa-solid fa-x"></i></button>';
-        taskDiv.appendChild(closeButton);
-        tasksList.appendChild(taskDiv);    
-    }
-    document.getElementById("tasksSection").classList.add("hidden");
-    document.getElementById("addSection").classList.remove("hidden");
-    updateCount();
 }
