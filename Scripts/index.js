@@ -66,6 +66,7 @@ function changeTaskType()
 {
     taskTypeSelected=document.getElementById("taskType").value;
     updateTasksDiv(taskTypeSelected);
+    updateCount(taskTypeSelected);
 }
 
 function createTaskDiv(task,i)
@@ -110,7 +111,7 @@ function completeTask(taskDivId,taskType,taskId)
     else
         tasksArray.splice(taskId,taskId);
     setTasksArray(allTasks,tasksArray,taskType);
-    updateCount();
+    updateCount(taskTypeSelected);
 }
 
 function deleteTask(taskId,taskType)
@@ -123,7 +124,7 @@ function deleteTask(taskId,taskType)
         tasksArray.splice(taskId,taskId);
     setTasksArray(allTasks,tasksArray,taskType);
     updateTasksDiv(taskTypeSelected);
-    updateCount();
+    updateCount(taskTypeSelected);
 }
 
 function fillCheck() 
