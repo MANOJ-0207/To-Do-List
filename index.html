@@ -16,25 +16,25 @@
             <h1>Add a new Task</h1>
             <div class="textInputs">
                 <span class="lable">Add Task</span>
-                <input type="text" oninput="fillCheck()"  id="task" placeholder="What needs to be done ?">
+                <input type="text" oninput="fillCheck()"  id="task" placeholder="What needs to be done ?" autocomplete="off">
                 <span class="lable">Description</span>
-                <input type="text" oninput="fillCheck()" id="description" placeholder="Describe your task">
+                <input type="text" oninput="fillCheck()" id="description" placeholder="Describe your task" autocomplete="off">
                 <div class="dateTimeDiv">
                     <div class="column1">
                         <span class="lable">Date</span>
-                        <input type="text"  oninput="fillCheck()" id="date" placeholder="dd/mm/yyyy">
+                        <input type="text"  oninput="fillCheck()" id="date" placeholder="dd/mm/yyyy" autocomplete="off">
                     </div>
                     <div class="column2">
                         <span class="lable">Add Task</span>
-                        <input type="text" oninput="fillCheck()" id="time" placeholder="hr:min:ss">
+                        <input type="text" oninput="fillCheck()" id="time" placeholder="hr:min:ss" autocomplete="off">
                     </div>
                 </div>
             </div>
             <div class="submission">
                 <div class="radioButtons">
-                    <input type="radio" name="type" value="Personal"  id="personal" class="radio" checked> <label for="personal" >Personal</label>
-                    <input type="radio" name="type" value="Business" id="business" class="radio"> <label for="business">Business</label>
-                    <input type="radio" name="type" value="Other" id="other" class="radio"> <label for="other">Other</label>
+                    <div class="radioDiv"><input type="radio" name="type" value="Personal"  id="personal" class="radio" checked> <label for="personal" >Personal</label></div>
+                    <div class="radioDiv"><input type="radio" name="type" value="Business" id="business" class="radio"> <label for="business">Business</label></div>
+                    <div class="radioDiv"><input type="radio" name="type" value="Other" id="other" class="radio"> <label for="other">Other</label></div>
                 </div>
                 <div class="submitButton">
                     <button id="submitButton" onclick="addTask()">Save</button>

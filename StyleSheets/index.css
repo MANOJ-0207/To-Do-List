@@ -45,8 +45,7 @@ body
 }
 .content
 {
-    padding-top:145px;
-    padding-bottom:70px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -152,7 +151,6 @@ body
     border: solid 1px #979797;
     background-color: #43b05c;
     color:white;
-    margin-left: 30%;
     cursor: not-allowed;
     height:51px;
 }
@@ -301,13 +299,18 @@ body
 .taskTypes
 {
     width:20%;
-    border:none;
+    border:0px;
     border-bottom: solid 1px #ddd;
     height:60px;
     font-family: Helvetica;
     font-size: 18px;
     font-weight: 300;
     color: #999;
+    border-radius: 7px;
+}
+.taskTypes:focus
+{
+    border:2px solid #43b05c;
 }
 .textInputs input
 {
@@ -336,4 +339,54 @@ body
 {
     background-color: #bbb;
     border-radius: 10px;
+}
+@media(max-width:700px)
+{
+    .addSection
+    {
+        font-size: 30px;
+        padding:35px 2.5%;
+    }
+    .logo
+    {
+        height:40px;
+        font-size: 17px;
+        flex-basis: 13%;
+        padding-top:10px;
+    }
+    .radioButtons
+    {
+        display:block;
+    }
+    .radioDiv
+    {
+        padding:2%;
+    }
+    .submitButton
+    {
+        text-align: center;
+    }
+    .taskContent
+    {
+        padding:0px 3%;
+        flex-basis: 50%;
+        overflow-x: auto;
+    }
+    .taskContent span
+    {
+        max-width: 100%;
+    }
+    .taskStatus
+    {
+        display:none;
+    }
+    .taskTypes
+    {
+        width:30%;
+        font-size: 14px;
+    }
+    .tasksSection
+    {
+        width:80%;
+    }
 }

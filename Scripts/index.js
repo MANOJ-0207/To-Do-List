@@ -22,23 +22,30 @@ function addTab()
 
 function addTask()
 {
-    var task={};
-    task.name=document.getElementById("task").value;
-    task.description=document.getElementById("description").value;
-    task.date=document.getElementById("date").value;
-    task.time=document.getElementById("time").value;
-    var taskType=document.querySelector('input[name="type"]:checked').value;
-    task.type=taskType
-    var allTasks=JSON.parse(localStorage.getItem("tasks"));
-    var tasksArray=getTasksArray(allTasks,taskType);
-    tasksArray.push(task);
-    setTasksArray(allTasks,tasksArray,taskType);
-    localStorage.setItem("tasks",JSON.stringify(allTasks));
-    console.log("Added");
-    updateTasksDiv(taskTypeSelected);
-    console.log(tasksArray);
-    addTab();
-    resetInput();
+    if(fillCheck())
+    {
+        var task={};
+        task.name=document.getElementById("task").value;
+        task.description=document.getElementById("description").value;
+        task.date=document.getElementById("date").value;
+        task.time=document.getElementById("time").value;
+        var taskType=document.querySelector('input[name="type"]:checked').value;
+        task.type=taskType
+        var allTasks=JSON.parse(localStorage.getItem("tasks"));
+        var tasksArray=getTasksArray(allTasks,taskType);
+        tasksArray.push(task);
+        setTasksArray(allTasks,tasksArray,taskType);
+        localStorage.setItem("tasks",JSON.stringify(allTasks));
+        console.log("Added");
+        updateTasksDiv(taskTypeSelected);
+        console.log(tasksArray);
+        addTab();
+        resetInput();
+    }
+    else
+    {
+        alert("Please Enter All Details about the task");
+    }
 }
 
 function calculateTimeDiff(taskDeadLine)
@@ -73,7 +80,7 @@ function createTaskDiv(task,i)
     taskDiv.appendChild(logoDiv);
     var taskContent=document.createElement('div');
     taskContent.classList.add("taskContent");
-    taskContent.innerHTML=`<h2>${task.name}</h2><span>${task.description}</span`
+    taskContent.innerHTML=`<h2>${task.name}</h2><span>${task.description}</span>`
     taskDiv.appendChild(taskContent);
     var timeRemaining=document.createElement('div');
     timeRemaining.classList.add("remainingTime");
@@ -125,9 +132,13 @@ function fillCheck()
     document.getElementById("description").value.length === 0 || 
     document.getElementById("date").value.length === 0 ||
     document.getElementById("time").value.length === 0)
+    {
         document.getElementById("submitButton").style.cursor="not-allowed";
+        return false;
+    }
     else
         document.getElementById("submitButton").style.cursor="pointer";
+    return true;
 }
 
 function getTasksArray(allTasks,taskTypeSelected)
