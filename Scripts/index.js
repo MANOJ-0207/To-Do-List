@@ -11,8 +11,9 @@ function initializeLocalStorage()
 }
 
 var taskTypeSelected="Personal";
+var taskStatusSelected = "all";
 
-updateTasksDiv(taskTypeSelected);
+updateTasksDiv();
 
 function addTab()
 {   
@@ -30,15 +31,14 @@ function addTask()
         task.date=document.getElementById("date").value;
         task.time=document.getElementById("time").value;
         var taskType=document.querySelector('input[name="type"]:checked').value;
-        task.type=taskType
+        task.type=taskType;
+        task.status="Pending";
         var allTasks=JSON.parse(localStorage.getItem("tasks"));
-        var tasksArray=getTasksArray(allTasks,taskType);
+        var tasksArray=getTasksArray(taskType);
         tasksArray.push(task);
         setTasksArray(allTasks,tasksArray,taskType);
         localStorage.setItem("tasks",JSON.stringify(allTasks));
-        console.log("Added");
-        updateTasksDiv(taskTypeSelected);
-        console.log(tasksArray);
+        updateTasksDiv();
         addTab();
         resetInput();
     }
@@ -65,68 +65,127 @@ function calculateTimeDiff(taskDeadLine)
 function changeTaskType()
 {
     taskTypeSelected=document.getElementById("taskType").value;
-    updateTasksDiv(taskTypeSelected);
-    updateCount(taskTypeSelected);
+    updateTasksDiv();
+    updateCount();
+}
+
+function changeTaskStatusSelected(taskStatus)
+{
+    deselectAll();
+    document.getElementById(taskStatus).classList.add("selected");
+    document.getElementById(taskStatus+'DropDown').classList.add("selectedDropDown");
+    taskStatusSelected = taskStatus;
+    updateTasksDiv();
 }
 
 function createTaskDiv(task,i)
 {
     var taskDiv=document.createElement('div');
     taskDiv.classList.add("task");
-    taskDiv.setAttribute("id",(i+task.type));
+    var taskDivID=(i+task.type);
+    taskDiv.setAttribute("id",taskDivID);
+
     var logoDiv=document.createElement('div');
     logoDiv.classList.add("logo");
     logoDiv.innerHTML="T";
     logoDiv.setAttribute("onclick","completeTask('"+(i+task.type)+"','"+task.type+"',"+i+")");
     taskDiv.appendChild(logoDiv);
+
     var taskContent=document.createElement('div');
     taskContent.classList.add("taskContent");
     taskContent.innerHTML=`<h2>${task.name}</h2><span>${task.description}</span>`
     taskDiv.appendChild(taskContent);
+
     var timeRemaining=document.createElement('div');
     timeRemaining.classList.add("remainingTime");
-    timeRemaining.setAttribute("id",i+task.type+"RemainingTime");
+    timeRemaining.setAttribute("id",(i+task.type)+"RemainingTime");
     var deadLine=calculateTimeDiff(task.date+" "+task.time);
     timeRemaining.innerHTML=deadLine;
     taskDiv.appendChild(timeRemaining);
+
     var closeButton=document.createElement('div');
     closeButton.classList.add("closeButton");
     closeButton.setAttribute("id",i+task.type+"CloseButton");
     closeButton.innerHTML=`<button class="closeButton" onclick="deleteTask(`+i+`,'`+task.type+`')"><i class="fa-solid fa-x"></i></button>`;
     taskDiv.appendChild(closeButton);
-    return taskDiv;
+
+    tasksList.appendChild(taskDiv);    
+    if(task.status!="Pending")
+        completeTask(taskDivID,task.type,i);
 }
 
 function completeTask(taskDivId,taskType,taskId)
 {   
     var taskDiv=document.getElementById(taskDivId);
+    var task=getTask(taskType,taskId);
+    task.status="Completed";
+    setTask(taskType,taskId,task);
     taskDiv.classList.add("completed");
-    taskDiv.firstChild.innerHTML='<i class="fa-solid fa-check"></i>';
+    var logoDiv=taskDiv.firstChild;
+    logoDiv.setAttribute("onclick","unCompleteTask('"+taskType+"',"+taskId+")");
+    logoDiv.innerHTML='<i class="fa-solid fa-check"></i>';
     document.getElementById(taskDivId+"RemainingTime").innerHTML="";
     document.getElementById(taskDivId+"CloseButton").innerHTML="";
     var allTasks=JSON.parse(localStorage.getItem("tasks"));
-    var tasksArray=getTasksArray(allTasks,taskType);
-    if(taskId==0)
-        tasksArray.shift();
-    else
-        tasksArray.splice(taskId,taskId);
-    setTasksArray(allTasks,tasksArray,taskType);
-    updateCount(taskTypeSelected);
+    location.reload;
+    updateCount();
 }
 
+function unCompleteTask(taskType,taskId)
+{
+    var task=getTask(taskType,taskId);
+    task.status="Pending";
+    setTask(taskType,taskId,task);
+    updateTasksDiv();
+    updateCount();
+}
+
+function clearCompletedTasks()
+{
+    var tasksArray=getTasksArray(taskTypeSelected);
+    var len=tasksArray.length;
+    for(var i=0;i<len;i++)
+    {
+        var task=tasksArray[i];
+        if(task.status==="Completed")
+            deleteTask(i,taskTypeSelected);
+    }
+    updateTasksDiv();
+}
+
+function deselectAll()
+{
+    var taskStatusDiv=document.getElementById("taskStatusTypes");
+    var statusTypes=taskStatusDiv.children;
+    for(var i=0;i<3;i++)
+    {
+        statusTypes[i].classList.remove("selected");
+    }
+    var dropDown=document.getElementById("dropDown");
+    var dropDownButtons=dropDown.children;
+    for(var i=0;i<3;i++)
+    {
+        dropDownButtons[i].classList.remove("selectedDropDown");
+    }
+}
 function deleteTask(taskId,taskType)
 {
     var allTasks=JSON.parse(localStorage.getItem("tasks"));
-    var tasksArray=getTasksArray(allTasks,taskType);
+    var tasksArray=getTasksArray(taskType);
     if(taskId==0)
         tasksArray.shift();
     else
         tasksArray.splice(taskId,taskId);
+    console.log(tasksArray);
     setTasksArray(allTasks,tasksArray,taskType);
-    updateTasksDiv(taskTypeSelected);
-    updateCount(taskTypeSelected);
+    console.log(localStorage.getItem("tasks"));
+    updateTasksDiv();
+    updateCount();
 }
-
+function dropDown() 
+{
+  document.getElementById("dropDown").classList.toggle("show");
+}
 function fillCheck() 
 {
     if (document.getElementById("task").value.length === 0 || 
@@ -142,11 +201,11 @@ function fillCheck()
     return true;
 }
 
-function getTasksArray(allTasks,taskTypeSelected)
+function getTasksArray(taskType)
 {
     var allTasks=JSON.parse(localStorage.getItem("tasks"));
     var tasksArray;
-    switch(taskTypeSelected)
+    switch(taskType)
     {
         case ("Other"):
             tasksArray = allTasks.Other;
@@ -159,6 +218,13 @@ function getTasksArray(allTasks,taskTypeSelected)
     }
     return tasksArray;
 }
+
+function getTask(taskType,i)
+{   
+    var tasksArray=getTasksArray(taskType);
+    return tasksArray[i];
+}   
+
 function resetInput()
 {
     document.getElementById("task").value='';
@@ -168,7 +234,7 @@ function resetInput()
 }
 
 function setTasksArray(allTasks,tasksArray,taskType)
-{
+{ 
     switch(taskType)
     {
         case ("Other"):
@@ -183,22 +249,47 @@ function setTasksArray(allTasks,tasksArray,taskType)
     localStorage.setItem("tasks",JSON.stringify(allTasks));
 }
 
-function updateCount(taskType)
+function setTask(taskType,i,task)
 {
+    var tasksArray=getTasksArray(taskType);
+    tasksArray[i]=task;
     var allTasks=JSON.parse(localStorage.getItem("tasks"));
-    var tasksArray=getTasksArray(allTasks,taskType);
-    var taskCount=tasksArray.length;
-    document.getElementById("count").innerHTML=taskCount;
+    setTasksArray(allTasks,tasksArray,taskType);
 }
 
-function updateTasksDiv(taskTypeSelected)
+function updateCount()
 {
+    var tasksArray=getTasksArray(taskTypeSelected);
+    var len=tasksArray.length;
+    var pendingCount=0;
+    var totalCount=len;
+    var completeCount=0;
+    for(var i=0;i<len;i++)
+    {
+        var task=tasksArray[i];
+        if(task.status=="Pending")
+            pendingCount++;
+        else
+            completeCount++;
+    }
+    if(taskStatusSelected=="all")
+        document.getElementById("count").innerHTML=totalCount;
+    else if(taskStatusSelected=="completed")
+        document.getElementById("count").innerHTML=completeCount;
+    else
+        document.getElementById("count").innerHTML=pendingCount;
+}
+
+function updateTasksDiv()
+{
+    var tasksArray=getTasksArray(taskTypeSelected);
     var allTasks=JSON.parse(localStorage.getItem("tasks"));
-    var tasksArray=getTasksArray(allTasks,taskTypeSelected);
     var len=tasksArray.length;
     var tasksList=document.getElementById("tasksList");
     var taskContainer=document.getElementById("tasksContainer");
     taskContainer.classList.remove("hidden");
+    while(tasksList.firstChild)
+            tasksList.removeChild(tasksList.firstChild);
     if(allTasks.Personal.length==0 && allTasks.Other.length==0 && allTasks.Business.length==0)
     {
         taskContainer.classList.add("hidden");
@@ -210,14 +301,33 @@ function updateTasksDiv(taskTypeSelected)
     }
     else
     {
-        while(tasksList.firstChild)
-            tasksList.removeChild(tasksList.firstChild);
+        var containsTasks=false;
         for(var i=0;i<len;i++)
         {
             var task=tasksArray[i];
-            var taskDiv=createTaskDiv(task,i);
-            tasksList.appendChild(taskDiv);    
+            if(taskStatusSelected=="completed")
+            {
+                if(task.status=="Completed")
+                {
+                    createTaskDiv(task,i);
+                    containsTasks=true;
+                }
+            }
+            else if(taskStatusSelected=="active")
+            {
+                if(task.status=="Pending")
+                {
+                    createTaskDiv(task,i);
+                    containsTasks=true;
+                }
+                    
+            }
+            else if(taskStatusSelected=="all")
+            {
+                createTaskDiv(task,i);
+                containsTasks=true;
+            }
         }
-        updateCount(task);
+        updateCount();
     }
 }

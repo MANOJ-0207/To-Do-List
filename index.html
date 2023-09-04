@@ -70,18 +70,24 @@
                     <div class="finishTask">
                         <button class="closeButton"><i class="fa-solid fa-x"></i></button>
                     </div>
-                </div>        
+                </div>       
             </div>
+            <div id="dropDown" class="dropdown-content">
+                <button id="allDropDown" class="selectedDropDown" onclick="changeTaskStatusSelected('all')">All</button>
+                <button id="completedDropDown" onclick="changeTaskStatusSelected('completed')">Completed</button>
+                <button id="activeDropDown" onclick="changeTaskStatusSelected('active')">Active</button>
+                <button id="clearDropDown" onclick="clearCompletedTasks()">Clear Completed</button>
+            </div> 
             <div class="taskCategory">
                 <div class="taskCount">
                     <span><span id="count">1 </span> item left</span>
                 </div>
-                <div class="taskStatus">
-                    <button class="selected">All</button>
-                    <button>Completed</button>
-                    <button>Active</button>
-                    <button>Clear</button>
-                    <button>Completed</button>
+                <div class="taskStatus" id="taskStatusTypes">
+                    <button id="all" class="selected statusButton" onclick="changeTaskStatusSelected('all')">All</button>
+                    <button class="statusButton" id="completed" onclick="changeTaskStatusSelected('completed')">Completed</button>
+                    <button class="statusButton" id="active" onclick="changeTaskStatusSelected('active')">Active</button>
+                    <button class="statusButton" id="clear" onclick="clearCompletedTasks()">Clear Completed</button>
+                    <div onclick="dropDown()" class="dropbtn"><i class="fa-solid fa-bars"></i></div>
                 </div>
             </div>
         </div>

@@ -68,6 +68,26 @@ body
 {
     flex-basis: 49%;
 }
+.dropDown 
+{
+    position: relative;
+    display:inline-block;
+}
+.dropbtn 
+{
+    padding: 16px;
+    cursor: pointer;
+    display: none;
+    border: none;
+    background-color: white;
+    float:right;
+}
+.dropdown-content 
+{
+    display: none;
+    overflow: auto;
+    text-align: right;
+}
 .finishTask
 {
     display:flex;
@@ -203,7 +223,7 @@ body
     font-weight: 300;
     color: #999;
     display: flex;
-    flex-basis: 60%;
+    flex-basis: 68%;
 }
 .tasksContainer
 {
@@ -376,10 +396,6 @@ body
     {
         max-width: 100%;
     }
-    .taskStatus
-    {
-        display:none;
-    }
     .taskTypes
     {
         width:30%;
@@ -388,5 +404,43 @@ body
     .tasksSection
     {
         width:80%;
+    }
+}
+@media(max-width:650px) 
+{
+    .dropbtn
+    {
+      display:block;
+    }
+    .dropdown-content button
+    {
+        text-align: right;
+        width: 40%;
+        height:30px;
+        border: 2px solid grey;
+    }
+    .statusButton
+    {
+        display: none;
+    }
+    .taskCount
+    {
+        flex-basis: 85%;
+    }
+    .selectedDropDown
+    {
+        border: 2px solid #43b05c;
+        background-color: white;
+        color:#43b05c;
+    }
+    .show
+    {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+    }
+    .taskCategory
+    {
+        padding-top: 10px;
     }
 }
