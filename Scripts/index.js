@@ -142,15 +142,13 @@ function unCompleteTask(taskType,taskId)
 
 function clearCompletedTasks()
 {
+    var allTasks=JSON.parse(localStorage.getItem("tasks"));
     var tasksArray=getTasksArray(taskTypeSelected);
-    var len=tasksArray.length;
-    for(var i=0;i<len;i++)
-    {
-        var task=tasksArray[i];
-        if(task.status==="Completed")
-            deleteTask(i,taskTypeSelected);
-    }
+    tasksArray=tasksArray.filter(task => task.status !== "Completed");
+    console.log(allTasks,tasksArray,taskTypeSelected);
+    setTasksArray(allTasks,tasksArray,taskTypeSelected);
     updateTasksDiv();
+    document.getElementById("dropDown").classList.toggle("show");
 }
 
 function deselectAll()

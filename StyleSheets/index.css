@@ -85,7 +85,6 @@ body
 .dropdown-content 
 {
     display: none;
-    overflow: auto;
     text-align: right;
 }
 .finishTask
@@ -415,7 +414,7 @@ body
     .dropdown-content button
     {
         text-align: right;
-        width: 40%;
+        width: 50%;
         height:30px;
         border: 2px solid grey;
     }
