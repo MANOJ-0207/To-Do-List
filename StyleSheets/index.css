@@ -170,7 +170,7 @@ body
     border: solid 1px #979797;
     background-color: #43b05c;
     color:white;
-    cursor: not-allowed;
+    cursor: pointer;
     height:51px;
 }
 .submitButton
@@ -294,18 +294,21 @@ body
 {
     display:flex;
 }
-.taskStatus button
-{
+.taskStatus button {
   margin-left: 9px;
   background-color: white;
-  padding:0px 13px;
+  padding: 0px 16px;
   font-family: Helvetica;
   font-size: 20px;
   font-weight: 300;
-  height:31px;
+  height: 31px;
   border-radius: 16.5px;
   color: #999;
-  border:0px;
+  border: 0px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .taskStatus button:hover
 {
@@ -416,7 +419,6 @@ body
         text-align: right;
         width: 50%;
         height:30px;
-        border: 2px solid grey;
     }
     .statusButton
     {

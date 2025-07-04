@@ -21,45 +21,38 @@ function addTab()
     document.getElementById("tasksSection").classList.toggle("hidden");    
 }
 
-function addTask()
-{
-    if(fillCheck())
-    {
-        var task={};
-        task.name=document.getElementById("task").value;
-        task.description=document.getElementById("description").value;
-        task.date=document.getElementById("date").value;
-        task.time=document.getElementById("time").value;
-        var taskType=document.querySelector('input[name="type"]:checked').value;
-        task.type=taskType;
-        task.status="Pending";
-        var allTasks=JSON.parse(localStorage.getItem("tasks"));
-        var tasksArray=getTasksArray(taskType);
+function addTask() {
+    if (fillCheck()) {
+        var task = {
+            name: document.getElementById("task").value,
+            description: document.getElementById("description").value,
+            date: document.getElementById("date").value,
+            time: document.getElementById("time").value,
+            type: document.querySelector('input[name="type"]:checked').value,
+            status: "Pending"
+        };
+
+        var allTasks = JSON.parse(localStorage.getItem("tasks"));
+        var tasksArray = getTasksArray(task.type);
         tasksArray.push(task);
-        setTasksArray(allTasks,tasksArray,taskType);
-        localStorage.setItem("tasks",JSON.stringify(allTasks));
+        setTasksArray(allTasks, tasksArray, task.type);
+        localStorage.setItem("tasks", JSON.stringify(allTasks));
         updateTasksDiv();
         addTab();
         resetInput();
     }
-    else
-    {
-        alert("Please Enter All Details about the task");
-    }
 }
 
-function calculateTimeDiff(taskDeadLine)
-{
-    var parts=taskDeadLine.split("/");
-    var deadLineDate=new Date(parts[1]+"/"+parts[0]+"/"+parts[2]);
-    var today=new Date().getTime();
-    var difference=deadLineDate.getTime()-today;
-    // console.log(difference);
-    var days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    if(days>=0 && hours>=0)
-        return days + " days "+ hours +" hours to go";
-    return "Deadline Passed";
+function calculateTimeDiff(dateStr, timeStr) {
+    let deadline = new Date(`${dateStr}T${timeStr}`);
+    let now = new Date();
+    let diff = deadline - now;
+
+    if (diff <= 0) return "Deadline Passed";
+
+    let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    return `${days} days ${hours} hours to go`;
 }
 
 function changeTaskType()
@@ -99,7 +92,7 @@ function createTaskDiv(task,i)
     var timeRemaining=document.createElement('div');
     timeRemaining.classList.add("remainingTime");
     timeRemaining.setAttribute("id",(i+task.type)+"RemainingTime");
-    var deadLine=calculateTimeDiff(task.date+" "+task.time);
+    let deadLine = calculateTimeDiff(task.date, task.time);
     timeRemaining.innerHTML=deadLine;
     taskDiv.appendChild(timeRemaining);
 
@@ -184,20 +177,56 @@ function dropDown()
 {
   document.getElementById("dropDown").classList.toggle("show");
 }
-function fillCheck() 
-{
-    if (document.getElementById("task").value.length === 0 || 
-    document.getElementById("description").value.length === 0 || 
-    document.getElementById("date").value.length === 0 ||
-    document.getElementById("time").value.length === 0)
-    {
-        document.getElementById("submitButton").style.cursor="not-allowed";
+function fillCheck() {
+    const task = document.getElementById("task").value.trim();
+    const description = document.getElementById("description").value.trim();
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const submitButton = document.getElementById("submitButton");
+
+    if (!task) {
+        alert("Please enter a task name.");
+        submitButton.style.cursor = "not-allowed";
         return false;
     }
-    else
-        document.getElementById("submitButton").style.cursor="pointer";
+
+    if (!description) {
+        alert("Please enter a task description.");
+        submitButton.style.cursor = "not-allowed";
+        return false;
+    }
+
+    if (!date) {
+        alert("Please select a valid date.");
+        submitButton.style.cursor = "not-allowed";
+        return false;
+    }
+
+    if (!time) {
+        alert("Please select a valid time.");
+        submitButton.style.cursor = "not-allowed";
+        return false;
+    }
+
+    const taskDateTime = new Date(`${date}T${time}`);
+    const now = new Date();
+
+    if (isNaN(taskDateTime.getTime())) {
+        alert("Invalid date or time format.");
+        submitButton.style.cursor = "not-allowed";
+        return false;
+    }
+
+    if (taskDateTime <= now) {
+        alert("Please select a future date and time.");
+        submitButton.style.cursor = "not-allowed";
+        return false;
+    }
+
+    submitButton.style.cursor = "pointer";
     return true;
 }
+
 
 function getTasksArray(taskType)
 {
@@ -327,5 +356,27 @@ function updateTasksDiv()
             }
         }
         updateCount();
+    }
+}
+
+function dropDown() {
+    const dropdown = document.getElementById("dropDown");
+
+    if (dropdown.classList.contains("show")) {
+        dropdown.classList.remove("show");
+        document.removeEventListener("click", handleOutsideClick);
+    } else {
+        dropdown.classList.add("show");
+        setTimeout(() => {
+            document.addEventListener("click", handleOutsideClick);
+        }, 0); // wait to avoid immediate close
+    }
+
+    function handleOutsideClick(event) {
+        const dropBtn = document.querySelector(".dropbtn");
+        if (!dropdown.contains(event.target) && !dropBtn.contains(event.target)) {
+            dropdown.classList.remove("show");
+            document.removeEventListener("click", handleOutsideClick);
+        }
     }
 }

@@ -16,17 +16,17 @@
             <h1>Add a new Task</h1>
             <div class="textInputs">
                 <span class="lable">Add Task</span>
-                <input type="text" oninput="fillCheck()"  id="task" placeholder="What needs to be done ?" autocomplete="off">
+                <input type="text" id="task" placeholder="What needs to be done ?" autocomplete="off">
                 <span class="lable">Description</span>
-                <input type="text" oninput="fillCheck()" id="description" placeholder="Describe your task" autocomplete="off">
+                <input type="text" id="description" placeholder="Describe your task" autocomplete="off">
                 <div class="dateTimeDiv">
                     <div class="column1">
                         <span class="lable">Date</span>
-                        <input type="text"  oninput="fillCheck()" id="date" placeholder="dd/mm/yyyy" autocomplete="off">
+                        <input type="date" id="date" autocomplete="off">
                     </div>
                     <div class="column2">
-                        <span class="lable">Add Task</span>
-                        <input type="text" oninput="fillCheck()" id="time" placeholder="hr:min:ss" autocomplete="off">
+                        <span class="lable">Time</span>
+                        <input type="time" id="time" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -50,13 +50,10 @@
                     <option value="Business">Business</option>
                     <option value="Other">Other</option>
                 </select>
-                <div class="searchBar">
-                    <input type="text" placeholder="Search By Task name "><i class="fa-solid fa-magnifying-glass"></i>
-                </div>
             </div>
             <h1>Tasks</h1>
             <div class="tasksList" id="tasksList">
-                <div class="task">
+                <!-- <div class="task">
                     <div class="logo">
                         T
                     </div>
@@ -70,7 +67,7 @@
                     <div class="finishTask">
                         <button class="closeButton"><i class="fa-solid fa-x"></i></button>
                     </div>
-                </div>       
+                </div>        -->
             </div>
             <div id="dropDown" class="dropdown-content">
                 <button id="allDropDown" class="selectedDropDown" onclick="changeTaskStatusSelected('all')">All</button>
